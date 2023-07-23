@@ -14,18 +14,23 @@ async function initBDs() {
     try {
     // Configuración de la base de datos de SQL Server
     const config = {
-        server: "organizate-project.database.windows.net",// Servidor de SQL Server
-        database: "orgnizat-db", // Base de datos
-        user: "86657@sistemas.frc.utn.edu.ar", // Usuario
-        password: "@Nadielasabe1312", // Contraseña
-
-        options: {
-        encrypt: true, // Establecer a true si estás utilizando una conexión segura (por ejemplo, SSL)
+        server: "organizate-project.database.windows.net",
+        port: 1433,
+        database: "orgnizat-db",
+        authentication: {
+            type: 'default',
+            options: {
+                userName: '9686443b-d2a8-4291-b44d-cf29f16daa9e',
+                password: 'Nadielasabe1'
+            }
         },
+        options: {
+            encrypt: true
+        },
+        connectionTimeout: 30000// Tiempo de espera para conectar con el servidor SQL
     };
-
     // Conectar a la base de datos
-    await sql.connect(config);
+    const db = await sql.connect(config);
 
     // Verificar si la tabla "tareas" existe
     let existe = await tablaExiste("tareas");

@@ -5,7 +5,7 @@ const cors = require('cors');
 //crear un servidor express
 const app = express();
 
-require("./bases-orm/sqlserv-init")//iniciar la bd
+require("./bases-orm/sqlite-init.js")//iniciar la bd
 app.use(express.json());//para que express pueda leer json
 app.use(cors());//para que express pueda recibir peticiones de otros dominios
 
