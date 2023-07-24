@@ -1,4 +1,4 @@
-const sql = require('sqlite3');
+const db = require('aa-sqlite');
 
 async function createBaseIfNotExist(){
     //abrir la base y crearla si no existe
@@ -14,18 +14,23 @@ async function createBaseIfNotExist(){
     }
 
     if(!existe){
-        await db.run(`CREATE TABLE tareas (id INTEGER PRIMARY KEY AUTOINCREMENT,
-        nombre TEXT NOT NULL, 
-        fechaDesde DATE NOT NULL,
-        fechaHasta DATE,
-        estado BOOLEAN NOT NULL,)`);
+        try{
+            await db.run(`CREATE TABLE tareas(
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            nombre TEXT NOT NULL, 
+            fechaDesde TEXT NOT NULL,
+            fechaHasta TEXT,
+            estado BOOLEAN NOT NULL);`);
 
-        console.log("Se creo la tabla tareas");
+            console.log("Se creo la tabla tareas");
 
-        //inserto las filas
-        await db.run(
-            `INSERT INTO tareas (nombre, fechaDesde, fechaHasta, estado) VALUES ('tarea1', '23-04-2023', '24-04-2023', 1)`,
-        );
+            //inserto las filas
+            await db.run(
+                `INSERT INTO tareas (id, nombre, fechaDesde, fechaHasta, estado) VALUES (1, 'tarea1', '2023-01-22', '2023-04-05', 1);`,
+            );
+        }catch(err){
+            console.log(err);
+        }
     }
     existe = false;
 
@@ -37,13 +42,17 @@ async function createBaseIfNotExist(){
     }
 
     if(!existe){
-        await db.run(`CREATE TABLE materias (id INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT NOT NULL)`);
+        await db.run(`CREATE TABLE materias (
+            id INTEGER PRIMARY KEY AUTOINCREMENT, 
+            nombre TEXT NOT NULL);`
+            );
         console.log("Se creo la tabla materias");
 
         //inserto las filas
 
         await db.run(
-            `INSERT INTO materias (nombre) VALUES ('BASES DE DATOS')`,
+            `INSERT INTO materias (id, nombre) VALUES (
+            1, 'BASES DE DATOS');`,
         );
     }
     existe = false;
@@ -56,13 +65,16 @@ async function createBaseIfNotExist(){
     }
 
     if(!existe){
-        await db.run(`CREATE TABLE tipoFechas (id INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT NOT NULL)`);
+        await db.run(`CREATE TABLE tipoFechas (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            nombre TEXT NOT NULL);`);
         console.log("Se creo la tabla tipoFechas");
 
         //inserto las filas
 
         await db.run(
-            `INSERT INTO tipoFechas (nombre) VALUES ('PARCIAL')`,
+            `INSERT INTO tipoFechas (id, nombre) VALUES (
+            1, 'PARCIAL');`,
         );
     }
     existe = false;
@@ -76,24 +88,24 @@ async function createBaseIfNotExist(){
     }
 
     if(!existe){
-        await db.run(`CREATE TABLE fechas (fechaSeleccionada DATE NOT NULL,
+        await db.run(`CREATE TABLE fechas (
+            fechaSeleccionada DATE NOT NULL,
             idMateria INTEGER NOT NULL,
             idTipoFecha INTEGER NOT NULL,
             descripcion TEXT NOT NULL,
             estado BOOLEAN NOT NULL,
-            FOREING KEY(idMateria) REFERENCES materias(id),
-            FOREING KEY(idTipoFecha) REFERENCES tipoFechas(id)),
-            PRIMARY KEY (fechaSeleccionada, idMateria, idTipoFecha)`);
+            PRIMARY KEY (fechaSeleccionada, idMateria, idTipoFecha),
+            FOREIGN KEY(idMateria) REFERENCES materias(id),
+            FOREIGN KEY(idTipoFecha) REFERENCES tipoFechas(id));`);
 
         console.log("Se creo la tabla fechas");
 
         //inserto las filas
         await db.run(
-            `INSERT INTO fechas (fechaSeleccionada, idMateria, idTipoFecha, descripcion) VALUES ('23-04-2023', 1, 1, 'PARCIAL 1',1)`
+            `INSERT INTO fechas (fechaSeleccionada, idMateria, idTipoFecha, descripcion, estado) VALUES ('2023-05-03', 1, 1, 'PARCIAL 1',TRUE);`
         );
     }
     existe = false;
-
 }
 
 createBaseIfNotExist();
