@@ -43,7 +43,7 @@ async function createBaseIfNotExist(){
 
     if(!existe){
         await db.run(`CREATE TABLE materias (
-            id INTEGER PRIMARY KEY AUTOINCREMENT, 
+            id INTEGER PRIMARY KEY, 
             nombre TEXT NOT NULL);`
             );
         console.log("Se creo la tabla materias");
@@ -66,7 +66,7 @@ async function createBaseIfNotExist(){
 
     if(!existe){
         await db.run(`CREATE TABLE tipoFechas (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            id INTEGER PRIMARY KEY,
             nombre TEXT NOT NULL);`);
         console.log("Se creo la tabla tipoFechas");
 
@@ -89,7 +89,7 @@ async function createBaseIfNotExist(){
 
     if(!existe){
         await db.run(`CREATE TABLE fechas (
-            fechaSeleccionada DATE NOT NULL,
+            fechaSeleccionada TEXT NOT NULL,
             idMateria INTEGER NOT NULL,
             idTipoFecha INTEGER NOT NULL,
             descripcion TEXT NOT NULL,
@@ -106,6 +106,7 @@ async function createBaseIfNotExist(){
         );
     }
     existe = false;
+    db.close();
 }
 
 createBaseIfNotExist();
