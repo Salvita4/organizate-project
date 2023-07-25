@@ -4,7 +4,7 @@ const {Sequelize, DataTypes}  = require('sequelize');
 const sequelize = new Sequelize("sqlite:" + "./.data/organizt.db");
 
 //definir los modelos
-const Tarea = sequelize.define('tarea', 
+const Tarea = sequelize.define('tareas', 
 {
     id: {
         type: DataTypes.INTEGER,
@@ -26,18 +26,28 @@ const Tarea = sequelize.define('tarea',
         }
     },
     fechaDesde: {
-        type: DataTypes.STRING,
+        type: DataTypes.DATEONLY,
         allowNull: false,
         validate: {
             notNull: {
                 args: true,
                 msg: "La fecha desde no puede estar vacia"
             },
+            isDate: {
+                args: true,
+                msg: "La fecha desde debe ser una fecha valida"
+            }
         }
     },
     fechaHasta: {
-        type: DataTypes.STRING,
+        type: DataTypes.DATEONLY,
         allowNull: true,
+        validate: {
+            isDate: {
+                args: true,
+                msg: "La fecha hasta debe ser una fecha valida"
+            }
+        }
     },
     estado: {
         type: DataTypes.BOOLEAN,
@@ -60,12 +70,12 @@ const Tarea = sequelize.define('tarea',
             }
         }
     },
-    tinmeStamps: false,
+    timestamps: false,
 }
 );
 
 //modelo de materias
-const Materia = sequelize.define('materia',
+const Materia = sequelize.define('materias',
 {
     id: {
         type: DataTypes.INTEGER,
@@ -94,7 +104,7 @@ const Materia = sequelize.define('materia',
             }
         }
     },
-    tinmeStamps: false,
+    timeStamps: false,
 }
 );
 
@@ -128,11 +138,12 @@ const TipoFecha = sequelize.define('tipoFecha',
                 }
             }
         },
+        timestamps: false,
     }
 );
 
 //modelo de fecha
-const Fecha = sequelize.define('fecha',
+const Fecha = sequelize.define('fechas',
 {
     fechaSeleccionada: {
         type: DataTypes.STRING,
@@ -202,7 +213,7 @@ const Fecha = sequelize.define('fecha',
             }
         }
     },
-    tinmeStamps: false,
+    timeStamps: false,
 }
 );
 

@@ -18,8 +18,8 @@ async function createBaseIfNotExist(){
             await db.run(`CREATE TABLE tareas(
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             nombre TEXT NOT NULL, 
-            fechaDesde TEXT NOT NULL,
-            fechaHasta TEXT,
+            fechaDesde DATE NOT NULL,
+            fechaHasta DATE,
             estado BOOLEAN NOT NULL);`);
 
             console.log("Se creo la tabla tareas");
