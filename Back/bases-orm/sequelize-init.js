@@ -84,7 +84,7 @@ const Tarea = sequelize.define('tareas',
 const Materia = sequelize.define('materias',
 {
     id: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.CHAR(2),
         primaryKey: true,
     },
     nombre: {
@@ -166,13 +166,7 @@ const Fecha = sequelize.define('fechas',
         type: DataTypes.INTEGER,
         primaryKey: true,
         foreignKey: true,
-        allowNull: false,
-        validate: {
-            notNull: {
-                args: true,
-                msg: "La materia no puede estar vacia"
-            }
-        }
+        allowNull: true,
     },
     idTipoFecha: {
         type: DataTypes.INTEGER,
@@ -216,6 +210,12 @@ const Fecha = sequelize.define('fechas',
         beforeValidate: (fecha, options) => {
             if (typeof fecha.descripcion === 'string') {
                 fecha.descripcion = fecha.descripcion.toUpperCase().trim();
+            }
+
+            //HOOK PARA VALIDAR QUE EL CODIGO DE MATERIA SEA UN NUMERO ENTERO O UNA CONVINACION DE LETRAS Y NUMEROS
+            const allowedChars = /^[A-Za-z0-9]+$/;
+            if (fecha.idMateria != null && !fecha.idMateria.match(allowedChars)) {
+                throw new Error("El codigo de materia solo puede contener letras y numeros, y no puede ser nulo");
             }
         }
     },
