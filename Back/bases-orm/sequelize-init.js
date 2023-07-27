@@ -68,6 +68,12 @@ const Tarea = sequelize.define('tareas',
             if (typeof tarea.nombre === 'string') {
                 tarea.nombre = tarea.nombre.toUpperCase().trim();
             }
+            
+            //hook para validar el input de nombre que este dentro de ciertos caracteres y que no este vacio
+            const allowedChars = /^[A-Za-z0-9]+$/;
+            if( tarea.nombre != null && !tarea.nombre.match(allowedChars)){
+                throw new Error("El nombre solo puede contener letras y numeros, y no puede ser nula");
+            }
         }
     },
     timestamps: false,
